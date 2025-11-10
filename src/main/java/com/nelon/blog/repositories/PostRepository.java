@@ -1,6 +1,6 @@
 package com.nelon.blog.repositories;
 
-import com.nelon.blog.domain.dto.entities.Post;
+import com.nelon.blog.domain.entities.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
