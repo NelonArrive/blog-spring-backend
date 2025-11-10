@@ -1,6 +1,7 @@
 package com.nelon.blog.mappers;
 
 import com.nelon.blog.domain.dto.CategoryDto;
+import com.nelon.blog.domain.dto.CreateCategoryRequest;
 import com.nelon.blog.domain.entities.Category;
 import com.nelon.blog.domain.entities.Post;
 import com.nelon.blog.domain.entities.PostStatus;
@@ -19,6 +20,8 @@ public interface CategoryMapper {
 		qualifiedByName = "calculatePostCount"
 	)
 	CategoryDto toDto(Category category);
+	
+	Category toEntity(CreateCategoryRequest createcategoryRequest);
 	
 	@Named("calculatePostCount")
 	default long calculatePostCount(List<Post> posts) {

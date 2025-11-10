@@ -5,6 +5,7 @@ import com.nelon.blog.repositories.CategoryRepository;
 import com.nelon.blog.services.interfaces.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,5 +18,15 @@ public class CategoryService implements ICategoryService {
 	@Override
 	public List<Category> getAllCategories() {
 		return categoryRepository.findAllWithPostCount();
+	}
+	
+	@Override
+	@Transactional
+	public Category createCategory(Category category) {
+		if (categoryRepository.existsByNameIgnoreCase(category.getName())) {
+			throw new IllegalArgumentException("Category with name " + category.getName() + " already " +
+				"exists");
+		}
+		return categoryRepository.save(category);
 	}
 }

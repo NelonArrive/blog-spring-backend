@@ -1,14 +1,15 @@
 package com.nelon.blog.controllers;
 
 import com.nelon.blog.domain.dto.CategoryDto;
+import com.nelon.blog.domain.dto.CreateCategoryRequest;
+import com.nelon.blog.domain.entities.Category;
 import com.nelon.blog.mappers.CategoryMapper;
 import com.nelon.blog.services.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,7 +31,14 @@ public class CategoryController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<CategoryDto> createCategory() {
-	
+	public ResponseEntity<CategoryDto> createCategory(
+		@Valid @RequestBody CreateCategoryRequest createCategoryRequest
+	) {
+		Category categoryToCreate = categoryMapper.toEntity(createCategoryRequest);
+		Category savedCategory = categoryService.createCategory(categoryToCreate);
+		return new ResponseEntity<>(
+			categoryMapper.toDto(savedCategory),
+			HttpStatus.CREATED
+		);
 	}
 }
