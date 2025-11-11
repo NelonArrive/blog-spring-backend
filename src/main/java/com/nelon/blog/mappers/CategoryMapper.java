@@ -21,7 +21,7 @@ public interface CategoryMapper {
 	)
 	CategoryDto toDto(Category category);
 	
-	Category toEntity(CreateCategoryRequest createcategoryRequest);
+	Category toEntity(CreateCategoryRequest createCategoryRequest);
 	
 	@Named("calculatePostCount")
 	default long calculatePostCount(List<Post> posts) {
