@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,22 @@ public class AuthService implements IAuthService {
 			.compact();
 	}
 	
-	private Key getSigninKey() {
+	@Override
+	public UserDetails validateToken(String token) {
+		String username = extractUsername(token);
+		return userDetailsService.loadUserByUsername(username);
+	}
+	
+	private String extractUsername(String token) {
+		return Jwts.parser()
+			.verifyWith(getSigninKey())
+			.build()
+			.parseSignedClaims(token)
+			.getPayload()
+			.getSubject();
+	}
+	
+	private SecretKey getSigninKey() {
 		byte[] keyBytes = secretKey.getBytes();
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
